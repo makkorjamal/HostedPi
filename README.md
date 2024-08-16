@@ -11,5 +11,3 @@ for different ways to install different packages.
 ## how does it work?
 This software reads different hosted services from a  config file
 "config.cfg" and install the them based these requirements
-
-# HostedPi
