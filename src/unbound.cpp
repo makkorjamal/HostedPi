@@ -46,7 +46,7 @@ int SetupUnbound::install(){
 			command.append("git clone https://github.com/NLnetLabs/unbound.git && ");
 			command.append("cd unbound && ");
 			command.append("./configure --prefix=/usr --sysconfdir=/etc --disable-static");
-			command.append(" --with-pidfile=/run/unbound.pid --with-libnghttp2 && ");
+			command.append(" --with-pidfile=/run/unbound.pid --with-libnghttp2 --enable-systemd && ");
 			command.append("make && sudo make install && ");
 			command.append("sudo cp contrib/unbound.service /etc/systemd/system/ && ");
 			command.append("sudo cp contrib/unbound.socket /etc/systemd/system/ && ");
