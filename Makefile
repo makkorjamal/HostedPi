@@ -1,7 +1,7 @@
 # Compiler
 CXX = g++
 
-CXXFLAGS = -Wall -Wextra -std=c++11 -Iinclude
+CXXFLAGS = -Wall -Wextra -lssl -lcrypto -std=c++11 -Iinclude
 
 SRC_DIR = src
 BUILD_DIR = build

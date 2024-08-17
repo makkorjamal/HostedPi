@@ -1,4 +1,7 @@
 #include <iostream>
+#include <iomanip>
+#include <sstream>
+#include "openssl/sha.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <map>
