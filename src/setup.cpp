@@ -38,7 +38,8 @@ int Setup::installEssentials(){
      * */
     std::cout << "Installing build-essential..." << std::endl;
     std::signal(SIGINT, Setup::checkCancel);
-    int installStatus = system("sudo apt-get install -y build-essential git flex bison");
+    int installStatus = system("sudo apt-get install -y build-essential "
+		    "git flex bison lighttpd");
     if (installStatus == 0) {
         std::cout << "build-essential installed successfully." << std::endl;
     } else {

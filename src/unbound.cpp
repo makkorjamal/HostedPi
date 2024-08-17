@@ -38,7 +38,7 @@ int SetupUnbound::install(){
 		    // make it from source to support ssl
 		    std::cout<< "Setting up encrypted Unbound"<<endl;
 			string command ="";
-			    if (system("getent group unbound") != 0) {
+			    if (system("getent group unbound") != 0) { //check if the group already exists
 				command.append("sudo groupadd unbound && ");
 				command.append("sudo adduser --system --no-create-home --disabled-login ");
 				command.append("--disabled-password --ingroup unbound unbound && ");
@@ -47,7 +47,18 @@ int SetupUnbound::install(){
 			command.append("cd unbound && ");
 			command.append("./configure --prefix=/usr --sysconfdir=/etc --disable-static");
 			command.append(" --with-pidfile=/run/unbound.pid --with-libnghttp2 && ");
-			command.append("make && sudo make install");
+			command.append("make && sudo make install && ");
+			command.append("sudo cp contrib/unbound.service /etc/systemd/system/ && ");
+			command.append("sudo cp contrib/unbound.socket /etc/systemd/system/ && ");
+			command.append("sudo chown unbound:unbound /etc/unbound -R && ");
+			command.append("sudo /usr/sbin/unbound-anchor -a /etc/unbound/root.key -v && ");
+			command.append("sudo /usr/sbin/unbound-control-setup && ");
+			command.append("sudo /usr/sbin/unbound-anchor -a /etc/unbound/root.key -v && ");
+			command.append("sudo systemctl daemon-reload && ");
+			command.append("sudo systemctl enable unbound.socket && ");
+			command.append("sudo systemctl start unbound.socket && ");
+			command.append("sudo systemctl enable unbound.service && ");
+			command.append("sudo systemctl start unbound.service && ");
 
 			int result = system(command.c_str());
 			if (result != 0) {
