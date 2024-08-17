@@ -7,9 +7,9 @@ SRC_DIR = src
 BUILD_DIR = build
 INCLUDE_DIR = include
 
-SRC = $(SRC_DIR)/main.cpp $(SRC_DIR)/configparser.cpp $(SRC_DIR)/setup.cpp $(SRC_DIR)/packages.cpp
+SRC = $(SRC_DIR)/main.cpp $(SRC_DIR)/configparser.cpp $(SRC_DIR)/setup.cpp $(SRC_DIR)/packages.cpp $(SRC_DIR)/unbound.cpp
 
-OBJ = $(BUILD_DIR)/main.o $(BUILD_DIR)/configparser.o $(BUILD_DIR)/setup.o $(SRC_DIR)/packages.o
+OBJ = $(BUILD_DIR)/main.o $(BUILD_DIR)/configparser.o $(BUILD_DIR)/setup.o $(BUILD_DIR)/packages.o $(BUILD_DIR)/unbound.o
 
 TARGET = main
 

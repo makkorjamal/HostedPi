@@ -2,6 +2,8 @@
 #define HH_UPDATEREPO_HH
 #include <iostream>
 #include <cstdlib> 
+#include <string>
+using namespace std;
 
 class Setup{
 
@@ -13,6 +15,6 @@ class Setup{
 
     int update();
     int installEssentials();
-    int installRequirements();
+    int installRequirements(std::map<string, map<string,string>> map);
 };
 #endif

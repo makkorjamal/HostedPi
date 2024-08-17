@@ -3,56 +3,44 @@
 #include <stdlib.h>
 #include <map>
 #include <string>
-#include "packages.h"
 #include <setup.h>
+#include "packages.h"
+#include "unbound.h"
 
 using namespace std;
 
 InstallPackages::InstallPackages(){
 	//nothing here
 }
-InstallPackages::InstallPackages(map<string, map<string,string>> map){
-	configMap = map;
+InstallPackages::InstallPackages(map<string, map<string,string>> cmap){
+	configMap = cmap;
 	Setup pkgsetup;
 	pkgsetup.update();
 	pkgsetup.installEssentials();
+	pkgsetup.installRequirements(cmap);
 }
 InstallPackages::~InstallPackages(){
 
 }
 int InstallPackages::install(){
 
-    string dryinstall = "apt-get --simulate install ";
-    string unboundstr = "unbound";
+    string dryinstall = "sudo apt-get install ";
+    string unboundstr  = "unbound";
+    string piholestr  = "pihole";
     if (configMap.find(unboundstr) != configMap.end()) {
 	if(configMap[unboundstr][""] == "True"){
-
-		if (configMap[unboundstr].find("port") != configMap[unboundstr].end()) {
-		    int port = stoi(configMap[unboundstr]["port"]);
-		    if(port == 5335){
-			    std::cout << "Installing unbound at non SSL port; " <<port<< std::endl;
-			    string command = dryinstall.append(unboundstr);
-			    int result = system(command.c_str());
-
-			    // Check the result
-			    if (result == -1) {
-				perror("system");
-				return EXIT_FAILURE;
-			    } else {
-				    std::cout<< "Unbound installed"<<endl;
-			    }
-		    } else if (port == 443){
-			    std::cout<< "Handle ssl port here"<<endl;
-		    }else{
-			    std::cout<<"Invalid port"<<std::endl;
-			    return EXIT_FAILURE;
-		    }
-		} else {
-		    std::cout << "Please specify the unbound port" << std::endl;
-		}
+	std::cout<<"Installing unbound..."<<std::endl;
+	SetupUnbound unbound(configMap);
+	unbound.install();
 	}
-    } else {
+    }else if (configMap.find(piholestr) != configMap.end()) {
+	if(configMap[piholestr][""] == "True"){
+	std::cout<<"Installing pihole..."<<std::endl;
+	//SetupPiHole pihole(configMap);
+	//pihole.install();
+	}
+    }else {
         std::cout << "Nothing to install here!" << std::endl;
     }
     return 0;
-}
+    } 

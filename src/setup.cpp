@@ -1,7 +1,10 @@
 #include <iostream>
+#include <map>
 #include <csignal>
+#include <string>
 #include <cstdlib> 
 #include "setup.h" 
+using namespace std;
 
 Setup::Setup(){
 	// do nothing
@@ -35,7 +38,7 @@ int Setup::installEssentials(){
      * */
     std::cout << "Installing build-essential..." << std::endl;
     std::signal(SIGINT, Setup::checkCancel);
-    int installStatus = system("sudo apt-get install -y build-essential");
+    int installStatus = system("sudo apt-get install -y build-essential git flex bison");
     if (installStatus == 0) {
         std::cout << "build-essential installed successfully." << std::endl;
     } else {
@@ -45,11 +48,38 @@ int Setup::installEssentials(){
     return 0;
 
 }
-int Setup::installRequirements(){
+int Setup::installRequirements(std::map<string, map<string,string>> cmap){
+
 	/*
 	 * This method is installs requirement
 	 * per package. The list is read from 
-	 * the config map
+	 * the config cmap
 	 */
+	    string unboundstr = "unbound";
+	    if (cmap.find(unboundstr) != cmap.end()) {
+		if(cmap[unboundstr][""] == "True"){
+
+			if (cmap[unboundstr].find("port") != cmap[unboundstr].end()) {
+			    int port = stoi(cmap[unboundstr]["port"]);
+			    if (port == 443){
+				    std::cout<< "Installing required packages..."<<endl;
+			            string command = "sudo apt-get -y install libssl-dev libnghttp2-dev";
+				    int result = system(command.c_str());
+				    if (result == -1) {
+					perror("system");
+					return EXIT_FAILURE;
+				    } else {
+					    std::cout<< "Unbound installed"<<endl;
+				    }
+			    }
+			    else{
+				    return 1;
+			    }
+			}else{
+				return 1;
+			}
+		}
+	    }
+
 	return 0;
 }
