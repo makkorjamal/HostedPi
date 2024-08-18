@@ -64,8 +64,8 @@ int Setup::installRequirements(std::map<string, map<string,string>> cmap){
 			    int port = stoi(cmap[unboundstr]["port"]);
 			    if (port == 443){
 				    std::cout<< "Installing required packages..."<<endl;
-			            string command = "sudo apt-get -y install libssl-dev" 
-				    " libnghttp2-dev libsystemd-dev libexpat1-dev";
+			            string command = "sudo apt-get -y install libssl-dev";
+				    command.append(" libnghttp2-dev libsystemd-dev libexpat1-dev");
 				    int result = system(command.c_str());
 				    if (result == -1) {
 					perror("system");
