@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "configparser.h"
-using namespace std;
 
 ConfigParser::ConfigParser(){
 
@@ -19,13 +18,13 @@ ConfigParser::ConfigParser(const char* fname){
 ConfigParser::~ConfigParser(){
 	//Destrory
 }
-map<string, map<string, string>> ConfigParser::parse(){
-    map<string, map<string, string>> configMap;
+std::map<std::string, std::map<std::string, std::string>> ConfigParser::parse(){
+    std::map<std::string, std::map<ast::string, std::string>> configMap;
     ifstream file(filename);
-    string line;
+    std::string line;
 
     if (!file.is_open()) {
-        cerr << "Could not open the file: " << filename << endl;
+        std::cerr << "Could not open the file: " << filename << std::endl;
         return configMap;
     }
 
@@ -38,8 +37,8 @@ map<string, map<string, string>> ConfigParser::parse(){
         }
         size_t equalPos = line.find('=');
         if (equalPos != string::npos) {
-            string key = line.substr(0, equalPos);
-            string value = line.substr(equalPos + 1);
+            std::string key = line.substr(0, equalPos);
+            std::string value = line.substr(equalPos + 1);
 
             key.erase(0, key.find_first_not_of(" \t"));
             key.erase(key.find_last_not_of(" \t") + 1);
@@ -48,8 +47,8 @@ map<string, map<string, string>> ConfigParser::parse(){
 
             size_t dotPos = key.find('.');
             if (dotPos != string::npos) {
-                string outerKey = key.substr(0, dotPos);
-                string innerKey = key.substr(dotPos + 1);
+                std::string outerKey = key.substr(0, dotPos);
+                std::string innerKey = key.substr(dotPos + 1);
                 configMap[outerKey][innerKey] = value; // Store nested key-value
             } else {
                 configMap[key][""] = value; // Store top-level key with an empty nested key
