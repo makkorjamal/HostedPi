@@ -58,7 +58,7 @@ int SetupUnbound::install(){
 			command.append("sudo systemctl enable unbound.socket && ");
 			command.append("sudo systemctl start unbound.socket && ");
 			command.append("sudo systemctl enable unbound.service && ");
-			command.append("sudo systemctl start unbound.service && ");
+			command.append("sudo systemctl start unbound.service");
 
 			int result = system(command.c_str());
 			if (result != 0) {
