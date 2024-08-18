@@ -38,7 +38,7 @@ int SetupUnbound::install(){
 		    // make it from source to support ssl
 		    std::cout<< "Setting up encrypted Unbound"<<endl;
 			string command ="";
-			    if (system("getent group unbound") != 0) { //check if the group already exists
+			    if (system("getent group unbound")) { //check if the group already exists
 				command.append("sudo groupadd unbound && ");
 				command.append("sudo adduser --system --no-create-home --disabled-login ");
 				command.append("--disabled-password --ingroup unbound unbound && ");
