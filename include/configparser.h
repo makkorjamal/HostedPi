@@ -3,7 +3,7 @@
 #include <iostream>
 #include <map>
 #include <string>
-using namespace std;
+
 class ConfigParser{
 	private:
 		char* filename;
@@ -11,6 +11,6 @@ class ConfigParser{
 		ConfigParser();
 		ConfigParser(const char* fname);
 		~ConfigParser();
-		map<string, map<string,string>> parse();
+		std::map<std::string, std::map<std::string,std::string>> parse();
 };
 #endif
