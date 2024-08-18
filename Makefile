@@ -1,20 +1,23 @@
 # Compiler
 CXX = g++
 
-CXXFLAGS = -Wall -Wextra -lssl -lcrypto -std=c++11 -Iinclude
+CXXFLAGS = -Wall -Wextra -std=c++11 -Iinclude 
+
+LDFLAGS = -lssl -lcrypto
 
 SRC_DIR = src
 BUILD_DIR = build
 INCLUDE_DIR = include
 
-SRC = $(SRC_DIR)/main.cpp $(SRC_DIR)/configparser.cpp $(SRC_DIR)/setup.cpp $(SRC_DIR)/packages.cpp $(SRC_DIR)/unbound.cpp
+SRC = $(SRC_DIR)/main.cpp $(SRC_DIR)/configparser.cpp $(SRC_DIR)/setup.cpp \
+      $(SRC_DIR)/pihole.cpp $(SRC_DIR)/packages.cpp $(SRC_DIR)/unbound.cpp 
 
-OBJ = $(BUILD_DIR)/main.o $(BUILD_DIR)/configparser.o $(BUILD_DIR)/setup.o $(BUILD_DIR)/packages.o $(BUILD_DIR)/unbound.o
+OBJ = $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SRC))
 
 TARGET = main
 
 $(TARGET): $(OBJ)
-	$(CXX) -o $@ $^
+	$(CXX) -o $@ $^ $(LDFLAGS)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(BUILD_DIR)  # Create build directory if it doesn't exist

@@ -7,16 +7,16 @@
 class SetupPihole{
 
 	private:
-	map<string, map<string,string>> configMap;
+		std::map<std::string, std::map<std::string,std::string>> configMap;
 
 	public:
 
 	SetupPihole();
-	SetupPihole(map<string, map<string,string>> cmap);
+	SetupPihole(std::map<std::string, std::map<std::string,std::string>> cmap);
 	~SetupPihole();
 
 	int install();
-	std::string generateHash(std::string password);
+	std::string generateHash(const std::string password);
 			
 };
 #endif

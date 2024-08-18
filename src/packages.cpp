@@ -6,6 +6,7 @@
 #include <setup.h>
 #include "packages.h"
 #include "unbound.h"
+#include "pihole.h"
 
 using namespace std;
 
@@ -33,14 +34,37 @@ int InstallPackages::install(){
 	SetupUnbound unbound(configMap);
 	unbound.install();
 	}
-    }else if (configMap.find(piholestr) != configMap.end()) {
+	}
+    if (configMap.find(piholestr) != configMap.end()) {
+	
 	if(configMap[piholestr][""] == "True"){
-	std::cout<<"Installing pihole..."<<std::endl;
-	//SetupPiHole pihole(configMap);
-	//pihole.install();
+		startInstall("Pihole");
+		SetupPihole pihole(configMap);
+		pihole.install();
+		endInstall("Pihole");
 	}
     }else {
         std::cout << "Nothing to install here!" << std::endl;
     }
     return 0;
-    } 
+} 
+void InstallPackages::startInstall(const std::string& softwareName) {
+	/*
+	 * Beautify the prompt
+	 */
+	std::cout << getColor(GREEN) << "Starting installation of " 
+		  << getColor(CYAN) << softwareName 
+		  << getColor(GREEN) << "..." 
+		  << getColor(RESET) << std::endl;
+}
+
+void InstallPackages::endInstall(const std::string& softwareName) {
+	std::cout << getColor(GREEN) << "Installation of " 
+		  << getColor(CYAN) << softwareName 
+		  << getColor(GREEN) << " completed successfully!" 
+		  << getColor(RESET) << std::endl;
+}
+    // Function to get ANSI escape code from Color enum
+std::string InstallPackages::getColor(ColorCode color) const {
+	return "\033[" + std::to_string(static_cast<int>(color)) + "m";
+}
