@@ -19,8 +19,8 @@ ConfigParser::~ConfigParser(){
 	//Destrory
 }
 std::map<std::string, std::map<std::string, std::string>> ConfigParser::parse(){
-    std::map<std::string, std::map<ast::string, std::string>> configMap;
-    ifstream file(filename);
+    std::map<std::string, std::map<std::string, std::string>> configMap;
+    std::ifstream file(filename);
     std::string line;
 
     if (!file.is_open()) {
@@ -36,7 +36,7 @@ std::map<std::string, std::map<std::string, std::string>> ConfigParser::parse(){
             continue;
         }
         size_t equalPos = line.find('=');
-        if (equalPos != string::npos) {
+        if (equalPos != std::string::npos) {
             std::string key = line.substr(0, equalPos);
             std::string value = line.substr(equalPos + 1);
 
@@ -46,7 +46,7 @@ std::map<std::string, std::map<std::string, std::string>> ConfigParser::parse(){
             value.erase(value.find_last_not_of(" \t") + 1);
 
             size_t dotPos = key.find('.');
-            if (dotPos != string::npos) {
+            if (dotPos != std::string::npos) {
                 std::string outerKey = key.substr(0, dotPos);
                 std::string innerKey = key.substr(dotPos + 1);
                 configMap[outerKey][innerKey] = value; // Store nested key-value
