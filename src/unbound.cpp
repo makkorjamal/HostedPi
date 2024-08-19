@@ -39,39 +39,56 @@ int SetupUnbound::install(){
 		    std::cout<< "Setting up encrypted Unbound"<<endl;
 			string command ="";
 			    if (system("getent group unbound")) { //check if the group already exists
-				command.append("sudo groupadd unbound && ");
-				command.append("sudo adduser --system --no-create-home --disabled-login ");
-				command.append("--disabled-password --ingroup unbound unbound && ");
+				command.append("sudo groupadd unbound");
+				command.append(" && sudo adduser --system --no-create-home --disabled-login ");
+				command.append("--disabled-password --ingroup unbound unbound");
 			    }
-			command.append("git clone https://github.com/NLnetLabs/unbound.git && ");
-			command.append("cd unbound && ");
-			command.append("./configure --prefix=/usr --sysconfdir=/etc --disable-static");
-			command.append(" --with-pidfile=/run/unbound.pid --with-libnghttp2 --enable-systemd && ");
-			command.append("make && sudo make install && ");
-			command.append("sudo cp contrib/unbound.service /etc/systemd/system/ && ");
-			command.append("sudo cp contrib/unbound.socket /etc/systemd/system/ && ");
-			command.append("sudo chown unbound:unbound /etc/unbound -R && ");
-			command.append("sudo /usr/sbin/unbound-anchor -a /etc/unbound/root.key -v && ");
-			command.append("sudo /usr/sbin/unbound-control-setup && ");
-			command.append("sudo /usr/sbin/unbound-anchor -a /etc/unbound/root.key -v && ");
-			command.append("sudo systemctl daemon-reload && ");
-			command.append("sudo systemctl enable unbound.socket && ");
-			command.append("sudo systemctl start unbound.socket && ");
-			command.append("sudo systemctl enable unbound.service && ");
-			command.append("sudo systemctl start unbound.service");
+			command.append(" git clone https://github.com/NLnetLabs/unbound.git");
+			command.append(" && cd unbound");
+			command.append(" && ./configure --prefix=/usr --sysconfdir=/etc --disable-static");
+			command.append(" --with-pidfile=/run/unbound.pid --with-libnghttp2 --enable-systemd");
+			command.append(" && make && sudo make install");
+			command.append(" && sudo chown unbound:unbound /etc/unbound -R");
 
-			int result = system(command.c_str());
-			if (result != 0) {
-			    std::cout<<"Invalid command"<<std::endl;
+			int result1 = system(command.c_str());
+			if (result1 != 0) {
+			    std::cout<<"Invalid command 1"<<std::endl;
 				return EXIT_FAILURE;
 			    }
 
+			command = "";
+			command.append("sudo unbound-control-setup");
+			//command.append(" && sudo unbound-anchor");
+			int result2 = system(command.c_str());
+			if (result2 != 0) {
+			    std::cout<<"Invalid command 2"<<std::endl;
+				return EXIT_FAILURE;
+			    }
+			command = "";
+			command.append(" cd unbound");
+			command.append(" && sudo systemctl enable contrib/unbound.socket");
+			command.append(" && sudo systemctl enable contrib/unbound.service");
+			command.append(" && sudo systemctl daemon-reload");
+			command.append(" && sudo systemctl start unbound.socket");
+			command.append(" && sudo systemctl start unbound.service");
+			int result3 = system(command.c_str());
+			if (result3 != 0) {
+			    std::cout<<"Invalid command 3"<<std::endl;
+				return EXIT_FAILURE;
+			    }
 
+			command = "sudo unbound-anchor 2>&1";  // error is not handled here 
+			int result4 = system(command.c_str()); // due to some weird but with
+							       // unbound-anchor but the 
+							       // commands runs successfully
+							       
+			
 	    }else{
 		    std::cout<<"Invalid port"<<std::endl;
 		    return EXIT_FAILURE;
 	    }
 	} else {
+
 	    std::cout << "Please specify the unbound port" << std::endl;
 	}
 	return 0;
