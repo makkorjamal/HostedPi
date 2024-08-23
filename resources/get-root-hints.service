@@ -1,6 +1,13 @@
 [Unit]
 Description=Download root.hints for Unbound DNS validating resolver
-After=network.target
+After=network-online.target
+Wants=network-online.target
 
 [Service]
-ExecStart=/usr/bin/curl -o /etc/unbound/root.hints https://www.internic.net/domain/named.root
+Type=oneshot
+ExecStart=/usr/bin/curl -fsSL -o /etc/unbound/root.hints https://www.internic.net/domain/named.root
+User=root
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
