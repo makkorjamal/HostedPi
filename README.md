@@ -18,6 +18,7 @@ To build the project, you need to have the OpenSSL development libraries install
 
 ```bash
 sudo apt-get update
-sudo apt-get install libssl-dev
+sudo apt-get install libssl-dev git
+git clone https://github.com/makkorjamal/HostedPi.git && cd HostedPi
 make
 ./main
