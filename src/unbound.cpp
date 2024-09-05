@@ -58,7 +58,7 @@ int SetupUnbound::install(){
 		    command.append(" && sudo chown unbound:unbound /etc/unbound -R");
 		    int result1 = system(command.c_str()); 
 		    if (result1 != 0) { 
-			    std::cout<<"Invalid command 1"<<std::endl;
+			    std::cout<<"Cant make the repository"<<std::endl;
 			    return EXIT_FAILURE; 
 		    }
 
@@ -66,7 +66,7 @@ int SetupUnbound::install(){
 		    command.append("sudo unbound-control-setup");
 		    int result2 = system(command.c_str());
 		    if (result2 != 0) {
-			    std::cout<<"Invalid command 2"<<std::endl;
+			    std::cout<<"Can't setup Unbound"<<std::endl;
 			    return EXIT_FAILURE;
 		    }
 		    command = "";
@@ -85,7 +85,7 @@ int SetupUnbound::install(){
 			    std::cout << "Service " << "pihole-FTL"  << " stopped." << std::endl;
 			    int result3 = system(command.c_str());
 			    if (result3 != 0) {
-				    std::cout<<"Invalid command 3"<<std::endl;
+				    std::cout<<"Can't load unbound systemctl service"<<std::endl;
 				    return EXIT_FAILURE;
 			    }
 			    std::string ecommand = "sudo systemctl start pihole-FTL"; 
@@ -94,7 +94,7 @@ int SetupUnbound::install(){
 		    else{
 			    int result3 = system(command.c_str());
 			    if (result3 != 0) {
-				    std::cout<<"Invalid command 3"<<std::endl;
+				    std::cout<<"Invalid command"<<std::endl;
 				    return EXIT_FAILURE;
 			    } 
 		    }
@@ -118,7 +118,7 @@ int SetupUnbound::install(){
 		       	command.append(" && sudo systemctl start get-root-hints.service");
 		       	int result5 = system(command.c_str());
 		       	if (result5 != 0) {
-			       	std::cout<<"Invalid command 5"<<std::endl;
+			       	std::cout<<"Cant setup autohint services"<<std::endl;
 			       	return EXIT_FAILURE;
 		       	}
 		       	else{
